@@ -76,6 +76,15 @@
                     <option value="popularity">Popularity</option>
                 </select>
             </div>
+
+            <div class="filter-group">
+                <label for="genderFilter">Gender:</label>
+                <select id="genderFilter">
+                    <option value="">Default</option>
+                    <option value="F">Womens</option>
+                    <option value="M">Mens</option>
+                </select>
+            </div>
             
             <div class="filter-group">
                 <button id="applyFilters">Apply Filters</button>
@@ -263,6 +272,7 @@
                 const onSaleFilter = document.getElementById('onSaleFilter').checked;
                 const brandFilter = document.getElementById('brandFilter').value;
                 const sortFilter = document.getElementById('sortFilter').value;
+                const genderFilter = document.getElementById("genderFilter").value;
 
                 // Prepare filter object
                 const filters = {
@@ -270,7 +280,8 @@
                     price_range: priceFilter,
                     on_sale: onSaleFilter ? true : null,
                     brand: brandFilter,
-                    sort_by: sortFilter
+                    sort_by: sortFilter,
+                    gender: genderFilter
                 };
 
                 try {
@@ -307,6 +318,7 @@
                     document.getElementById('onSaleFilter').checked = false;
                     document.getElementById('brandFilter').value = '';
                     document.getElementById('sortFilter').value = '';
+                    document.getElementById('genderFilter').value = '';
 
                     // Reload all data (reset to page 1)
                     currentPage = 1;

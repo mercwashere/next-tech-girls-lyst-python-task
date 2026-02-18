@@ -46,6 +46,7 @@ class Handler(SimpleHTTPRequestHandler):
                 # Apply filters using the filter.py functions
                 color = filters.get("color") or None
                 brand = filters.get("brand") or None
+                gender = filters.get("gender") or None
                 on_sale = (
                     filters.get("on_sale")
                     if filters.get("on_sale") is not None
@@ -65,6 +66,7 @@ class Handler(SimpleHTTPRequestHandler):
                     price_range=price_range,
                     on_sale=on_sale,
                     brand=brand,
+                    gender=gender
                 )
 
                 # Apply sorting if specified
@@ -116,6 +118,7 @@ class Handler(SimpleHTTPRequestHandler):
                 # Apply filters
                 color = filters.get("color") or None
                 brand = filters.get("brand") or None
+                gender = filters.get("gender") or None
                 on_sale = (
                     filters.get("on_sale")
                     if filters.get("on_sale") is not None
@@ -135,6 +138,7 @@ class Handler(SimpleHTTPRequestHandler):
                     price_range=price_range,
                     on_sale=on_sale,
                     brand=brand,
+                    gender=gender
                 )
 
                 # Apply sorting if specified
@@ -191,7 +195,7 @@ class Handler(SimpleHTTPRequestHandler):
         elif self.path == "/api/clear-filters":
             # Remove the filters file
             if os.path.exists("current_filters.json"):
-                os.remove("current_filters.json")
+                os.remove("current_filters.json") #removed when you clear filters
 
             self.send_response(200)
             self.send_header("Content-type", "application/json")
