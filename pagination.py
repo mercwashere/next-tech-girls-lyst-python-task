@@ -28,7 +28,7 @@ def get_total_pages(products, items_per_page=50):
     Hint: You may need to use math.ceil() to round up to the nearest whole number.
     """
     # YOUR CODE HERE
-    pass
+    return math.ceil(len(products) / items_per_page)
 
 
 def get_page_data(products, page_number, items_per_page=50):
@@ -53,7 +53,10 @@ def get_page_data(products, page_number, items_per_page=50):
     Hint: Calculate the start_index and end_index based on page_number and items_per_page.
     """
     # YOUR CODE HERE
-    pass
+    start_index = items_per_page * page_number
+    end_index = start_index + items_per_page
+
+    return products[start_index:end_index]
 
 
 def create_pagination_info(products, page_number, items_per_page=50):
@@ -95,4 +98,4 @@ def create_pagination_info(products, page_number, items_per_page=50):
     Hint: has_next is True if current_page < total_pages
     """
     # YOUR CODE HERE
-    pass
+    
