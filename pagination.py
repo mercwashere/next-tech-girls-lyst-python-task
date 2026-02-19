@@ -53,10 +53,11 @@ def get_page_data(products, page_number, items_per_page=50):
     Hint: Calculate the start_index and end_index based on page_number and items_per_page.
     """
     # YOUR CODE HERE
-    start_index = items_per_page * page_number
-    end_index = start_index + items_per_page
-
-    return products[start_index:end_index]
+    end_index = items_per_page * page_number
+    start_index = end_index - items_per_page
+    end_index -= 1
+    start_index -= 1
+    return [start_index, end_index]
 
 
 def create_pagination_info(products, page_number, items_per_page=50):
@@ -98,4 +99,29 @@ def create_pagination_info(products, page_number, items_per_page=50):
     Hint: has_next is True if current_page < total_pages
     """
     # YOUR CODE HERE
+    
+    x = get_page_data(products, page_number, items_per_page=50)
+
+    pagination_info = {}
+    pagination_info.update({"current_page":page_number})
+    pagination_info.update({"total_pages":get_total_pages(products, items_per_page=50)})
+    pagination_info.update({"items_per_page":items_per_page})
+    pagination_info.update({"total_items":len(products)})
+
+    if pagination_info["current_page"] >= 1:
+        pagination_info.update({"has_previous":True})
+    else:
+        pagination_info.update({"has_previous":False})
+    
+    if pagination_info["current_page"] < pagination_info["total_pages"] :
+        pagination_info.update({"has_next":True})
+    else:
+        pagination_info.update({"has_next":False})
+
+    pagination_info.update({"start_index":x[0]})
+    pagination_info.update({"end_index":x[1]})
+
+    
+
+
     
