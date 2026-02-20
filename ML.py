@@ -39,6 +39,8 @@ def cosine_similarity(vec_a, vec_b):
 
 products = load_products()
 products_slice = products[:10]  
+product_ids = {}
+
 
 shoes = {}
 bags = {}
@@ -47,29 +49,14 @@ accessories = {}
 
 count = 0
 for product in products_slice:
-    if product["product_type"] == "shoes":
-        count += 1
-        shoes[count] = product
-    elif product["product_type"] == "bags":
-        count += 1
-        bags[count] = product
-    elif product["product_type"] == "clothing":
-        count += 1
-        clothing[count] = product
-    elif product["product_type"] == "accessories":
-        count += 1
-        accessories[count] = product
+        product_ids[product["product_id"]] = product
 
-print(f"Loaded {len(shoes)} shoes, {len(bags)} bags, {len(clothing)} clothing items, {len(accessories)} accessories")
+print(f"Loaded {len(product_ids)} products")
 
+selected_product_id = input("\nEnter a product_id to find similar items: ")
 
-
-selected_shoe_id = 1
-
-shoe_emb = get_embedding_for_image(shoes[selected_shoe_id]["image_url"])
-if shoe_emb is None:
-    raise ValueError("Failed to compute embedding for selected shoe")
-shoes[selected_shoe_id]["image_embedding"] = shoe_emb
+selected_product = product_ids[selected_product_id]
+selected_emb = get_embedding_for_image(selected_product["image_url"])
 
 for category in [bags, clothing, accessories]:
     for product_id, product in category.items():
@@ -80,14 +67,19 @@ for category in [bags, clothing, accessories]:
         else:
             print(f"Skipping {product['product_id']} due to failed embedding")
 
-
-
-all_products = {**bags, **clothing, **accessories}
-
 similarities = []
-for prod_id, product in all_products.items():
-    if "image_embedding" in product:
-        sim = cosine_similarity(shoes[selected_shoe_id]["image_embedding"], product["image_embedding"])
-        similarities.append((prod_id, sim, product["product_type"], product["product_id"]))
+
+for p_id, product in product_ids.items():
+
+    if p_id == selected_product_id:
+        continue
+
+    emb = get_embedding_for_image(product["image_url"])
+    if emb is None:
+        continue
+
+    sim = cosine_similarity(selected_emb, emb)
+
+    similarities.append((p_id, sim, product["product_type"], product["name"]))
 
 print(similarities)
